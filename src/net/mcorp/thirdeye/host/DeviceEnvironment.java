@@ -3,6 +3,8 @@ package net.mcorp.thirdeye.host;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,7 +134,7 @@ public class DeviceEnvironment {
 			}
 		}
 		
-		this.addDevice(new Camera());
+		//this.addDevice(new Camera());
 		
 	}
 	
@@ -147,11 +149,42 @@ public class DeviceEnvironment {
 		try {
 			
 			List<String> lines = Files.readAllLines(deviceFile.toPath());
-			String type = lines.get(0);
-			if(type.contains(":"))
-				type = type.split(":")[1];
+			String line = lines.get(0);
+			String type = "";
+			String value = "";
+			if(line.contains(":")) {
+				value = line.split(":")[1];
+				type = line.split(":")[0];
+			}else {
+				type = line;
+			}
 			if(type.equalsIgnoreCase("class")) {
-				
+				Class<?> dev_class = ClassLoader.getSystemClassLoader().loadClass(value);
+				if(Device.class.isAssignableFrom(dev_class)) {
+					Constructor<?>[] constructors = dev_class.getConstructors();
+					for(Constructor<?> constructor : constructors) {
+						Annotation[] annotations = constructor.getAnnotations();
+						if(annotations == null)
+							continue;
+						for(Annotation annotation : annotations) {
+							if(annotation instanceof DeviceEntry) {
+								if(constructor.getParameterCount() > 1) {
+									throw new Exception("Failed to create the device in ram as it requires other parameters than File.");
+								}else
+								if(constructor.getParameterCount() == 1) {
+									Class<?> param_class = constructor.getParameterTypes()[0];
+									if(param_class == File.class)
+										this.addDevice((Device) constructor.newInstance(deviceFile));
+									else
+										throw new Exception("Failed to create the device in ram as it required a different parameter than File.");
+								}else {
+									this.addDevice((Device) constructor.newInstance());
+								}
+								break;
+							}
+						}
+					}
+				}
 			}else{
 				throw new Exception("Type ["+type+"] not supported...");
 			}

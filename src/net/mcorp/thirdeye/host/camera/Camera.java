@@ -1,17 +1,14 @@
 package net.mcorp.thirdeye.host.camera;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-
 import net.mcorp.thirdeye.host.Device;
+import net.mcorp.thirdeye.host.DeviceEntry;
 import net.mcorp.thirdeye.host.DeviceEnvironment;
 import net.mcorp.thirdeye.host.GPIOMode;
 import net.mcorp.thirdeye.utils.networking.IPAddress;
@@ -32,6 +29,11 @@ public class Camera extends Device {
 	public final CameraSession session = new CameraSession(this);
 	
 	public CameraThread thread1;
+	
+	@DeviceEntry
+	public Camera(File file) {
+		super(file);
+	}
 	
 	@Override
 	public void run() { //TODO: Change it so that the program understands that it cannot save within the .jar file after being exported. File path issues!

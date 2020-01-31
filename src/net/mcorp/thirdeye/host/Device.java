@@ -1,5 +1,6 @@
 package net.mcorp.thirdeye.host;
 
+import java.io.File;
 
 public abstract class Device implements Runnable{
 	
@@ -8,6 +9,10 @@ public abstract class Device implements Runnable{
 	
 	protected boolean running = false;
 	public boolean running() { return this.running; };
+	
+	protected final File device_file;
+	
+	public Device(File file) { device_file = file; }
 	
 	public void start() {
 		this.setup();

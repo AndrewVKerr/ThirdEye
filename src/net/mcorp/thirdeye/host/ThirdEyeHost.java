@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import net.mcorp.thirdeye.ThirdEyeMode;
 import net.mcorp.thirdeye.host.camera.Camera;
 import net.mcorp.thirdeye.host.camera.CameraFrame;
+import net.mcorp.thirdeye.host.server.Server;
 
 public class ThirdEyeHost extends ThirdEyeMode {
 
@@ -40,6 +41,13 @@ public class ThirdEyeHost extends ThirdEyeMode {
 		
 		System.out.println("> Loading devices...");
 		DeviceEnvironment.getEnvironment().loadDevices(new File("./devices"));
+		
+		System.out.println("> Starting server thread");
+		Server server = new Server(2020);
+		Thread server_thread = new Thread(server);
+		server_thread.setName("Server Thread");
+		server_thread.setDaemon(true);
+		server_thread.start();
 		
 		System.out.println("> Starting device threads");
 		System.out.println("\t> Cameras");
