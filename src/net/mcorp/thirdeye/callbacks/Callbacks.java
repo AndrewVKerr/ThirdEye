@@ -1,6 +1,9 @@
 package net.mcorp.thirdeye.callbacks;
 
+import java.io.IOException;
+
 import net.mcorp.thirdeye.security.ThirdEyeSecurityManager;
+import net.mcorp.thirdeye.threading.Threader;
 
 /**
  * <h1>Callbacks</h1>
@@ -22,6 +25,21 @@ public final class Callbacks {
 	 */
 	public final CallbackGroup<Integer> onShutdown = new CallbackGroup<Integer>();
 	
-	private Callbacks() {}
+	private Callbacks() {
+		
+		Thread shutdownThread = Threader.instance.createThread(new Runnable() {
+
+			@Override
+			public void run() {
+				if(onShutdown == null)
+					return;
+				onShutdown.callback(0);
+			}
+			
+		});
+		
+		Runtime.getRuntime().addShutdownHook(shutdownThread);
+		
+	}
 	
 }

@@ -38,9 +38,9 @@ The server will be designed to run as efficiently on its designated hardware. Th
         - [X] Create a Callback Manager
         - [ ] Read in Manifest
             - [ ] Setup default Security Permission's.
-            - [ ] Search Manifest for a list of all necessary Java Classes.
-                - [ ] Load in Java Class.
-                - [ ] Set Individual Security Permission's for each Java Class.
+            - [X] Search Manifest for a list of all necessary Java Classes.
+                - [X] Load in Java Class.
+                - [X] Set Individual Security Permission's for each Java Class.
                 - [ ] Instantiate a new instance.
                 - [ ] Execute Java Class setup method.
                     - [ ] This method must either:
