@@ -32,6 +32,12 @@ public final class Threader {
 		return thread;
 	}
 	
+	/**
+	 * This method creates a new {@linkplain Thread} object using the runnable parameter. However this method will throw a {@linkplain SecurityException}
+	 * if the method was called outside of the main thread. 
+	 * @param runnable - {@linkplain Runnable} - A runnable object.
+	 * @return {@linkplain Thread} - The thread being generated.
+	 */
 	public Thread createThread(Runnable runnable) {
 		
 		Thread current_thread = Thread.currentThread();

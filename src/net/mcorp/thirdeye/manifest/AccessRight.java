@@ -1,5 +1,9 @@
 package net.mcorp.thirdeye.manifest;
 
+/**
+ * This is the set of rights that a device can have.
+ * @author Andrew Kerr
+ */
 public enum AccessRight {
 	
 	Threading,
@@ -13,6 +17,15 @@ public enum AccessRight {
 	CriticalFileRead,
 	CriticalFileWrite,
 	LibraryLink,
-	CMDExecution,
+	CMDExecution,;
+
+	public static AccessRight parse(String name) {
+		for(AccessRight right : values()) {
+			if(right.name().equalsIgnoreCase(name)) {
+				return right;
+			}
+		}
+		return null;
+	}
 	
 }

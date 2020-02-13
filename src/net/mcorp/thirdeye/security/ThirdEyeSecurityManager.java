@@ -30,7 +30,7 @@ public class ThirdEyeSecurityManager extends SecurityManager{
 	public void checkAccess(ThreadGroup g) {
 		Thread thread = Thread.currentThread();
 		if(!Threader.instance.isThreadRegistered(thread)) {
-			throw new SecurityException("A unregistered thread attempted to execute!");
+			throw new SecurityException("Threads must be made using the Threader.instance.createThread(...) method.");
 		}
 	}
 	

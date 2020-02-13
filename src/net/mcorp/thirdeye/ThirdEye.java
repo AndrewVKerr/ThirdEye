@@ -10,11 +10,21 @@ import net.mcorp.thirdeye.security.ThirdEyeSecurityManager;
 
 public class ThirdEye {
 	
+	private static File directory;
+	public static final File directory() { return directory; };
+	
 	public static void main(String[] args) {
+		
+		File temp_directory = new File("./");
+		if(temp_directory.getAbsolutePath().contains(".jar")) {
+			while(temp_directory.getAbsolutePath().contains(".jar"))
+				temp_directory = temp_directory.getParentFile();
+		}
+		directory = temp_directory;
 		
 		//Step 1: Setup Security Manager
 		try {
-			System.setSecurityManager(ThirdEyeSecurityManager.instance);
+			//System.setSecurityManager(ThirdEyeSecurityManager.instance);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -54,7 +64,7 @@ public class ThirdEye {
 		
 		//Step 5: Read in Manifest TODO:
 		try {
-			Manifest.instance.read(new File("/home/andrew/ThirdEye/manifest.xml"));
+			Manifest.instance.read(new File(directory.getAbsolutePath()+"/manifest.xml"));
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

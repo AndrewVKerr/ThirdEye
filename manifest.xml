@@ -1,0 +1,14 @@
+<Manifest>
+    <JavaClasses>
+        <JavaClass>
+            <AccessRights Threading="true" NetworkingConnect="true"/>
+            <Classpath jar_location="/home/andrew/Desktop/GIT/ThirdEyeRepo/classes/Test.jar">classes.JideTechCamera</Classpath>
+            <Threads>
+                <Thread name="JideTechCamera"/>
+            </Threads>
+            <Parameters>
+                <Password value="j3cqU3PzYjBScfd"/>
+            </Parameters>
+        </JavaClass>
+    </JavaClasses>
+</Manifest>
