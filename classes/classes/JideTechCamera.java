@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -19,9 +20,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.mcorp.thirdeye.devices.CameraDevice;
-import net.mcorp.thirdeye.manifest.JavaClass;
-import net.mcorp.thirdeye.threading.Threader;
+import net.mcorp.thirdeye.dynamic.devices.prefabs.CameraDevice;
+import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
+import net.mcorp.thirdeye.systems.ThreadManager;
 
 public class JideTechCamera extends CameraDevice implements Runnable{
 
@@ -49,17 +50,15 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 	public File recordingLocation() {
 		return recording_location;
 	}
-
-	private Image[] images = new Image[10];
 	
 	@Override
 	public Image getCurrentImage() {
-		return images[0];
+		return this.currentImage;
 	}
 
 	@Override
 	public Image[] getImagesArray() {
-		return images;
+		return null;
 	}
 
 	private Thread myThread;
@@ -105,7 +104,7 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 		
 		System.out.println("Start");
 		if(myThread == null) {
-			myThread = Threader.instance.createThread(this,this);
+			myThread = ThreadManager.instance().createThread(this,this);
 		}
 		try{
 			myThread.checkAccess();
@@ -122,11 +121,10 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 
 	public final String url = "/jpgmulreq/1/image.jpg?key="+System.currentTimeMillis()+"&lq=";
 	
-	private int image_insert_index = 0;
-	
 	@Override
 	public void run() {
 		int i = 10;
+		long time = System.currentTimeMillis();
 		while(true) {
 			if(i > 3000)
 				i = 10;
@@ -138,23 +136,21 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 				
 				BufferedImage bimg = ImageIO.read(url);
 				
-				if(image_insert_index > images.length-1);
-					image_insert_index = 0;
-				
 				currentImage = bimg;
 				if(frame != null)
 					frame.setSize(bimg.getWidth(), bimg.getHeight());
 				
-				images[image_insert_index % images.length] = bimg;
+				if(System.currentTimeMillis()-time < 500)
+					continue;
 				
-				image_insert_index++;
+				time = System.currentTimeMillis();
 				
 				try {
 					
 					LocalDate date = LocalDate.now();
 					Month month = date.getMonth();
 					int day = date.getDayOfMonth();
-					File video_file = new File("/home/andrew/Desktop/recordings/"+month+"-"+day+".mjpeg");
+					File video_file = new File(this.configuration.getWorkspace().getAbsolutePath()+"/"+month+"-"+day+".mjpeg");
 					
 					if(video_file.exists() == false) {
 						Files.createDirectories(video_file.getParentFile().toPath());
@@ -171,6 +167,10 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				if(e instanceof SecurityException) {
+					this.exceptions.add(e);
+					return;
+				}
 			}
 		}
 	}
@@ -190,12 +190,25 @@ public class JideTechCamera extends CameraDevice implements Runnable{
 
 	@Override
 	public boolean isRunning() {
-		return myThread.isAlive();
+		return (myThread == null ? false : myThread.isAlive());
 	}
 
 	@Override
 	public Exception[] exceptions() {
 		return exceptions.toArray(new Exception[] {});
+	}
+
+	@Override
+	public String deviceName() {
+		return "JideTechCamera";
+	}
+
+	@Override
+	public void clearException(Exception e) {
+		if(exceptions.contains(e))
+			exceptions.remove(e);
+		else
+			throw new NullPointerException("Exception ["+e+"] does not exist within this device.");
 	}
 
 }

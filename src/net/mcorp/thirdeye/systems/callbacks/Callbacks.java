@@ -1,9 +1,9 @@
-package net.mcorp.thirdeye.callbacks;
+package net.mcorp.thirdeye.systems.callbacks;
 
 import java.io.IOException;
 
-import net.mcorp.thirdeye.security.ThirdEyeSecurityManager;
-import net.mcorp.thirdeye.threading.Threader;
+import net.mcorp.thirdeye.systems.TESecurityManager;
+import net.mcorp.thirdeye.systems.ThreadManager;
 
 /**
  * <h1>Callbacks</h1>
@@ -21,13 +21,14 @@ public final class Callbacks {
 	public static final Callbacks instance = new Callbacks();
 	
 	/**
-	 * This callback group is called by the security manager ({@linkplain ThirdEyeSecurityManager}) before the program exits.
+	 * This callback group is called by the security manager ({@linkplain TESecurityManager}) before the program exits.
 	 */
 	public final CallbackGroup<Integer> onShutdown = new CallbackGroup<Integer>();
 	
 	private Callbacks() {
 		
-		Thread shutdownThread = Threader.instance.createThread(new Runnable() {
+		try {
+		Thread shutdownThread = ThreadManager.instance().createThread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -39,6 +40,9 @@ public final class Callbacks {
 		});
 		
 		Runtime.getRuntime().addShutdownHook(shutdownThread);
+		}catch(ExceptionInInitializerError e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

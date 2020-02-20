@@ -1,4 +1,4 @@
-package net.mcorp.thirdeye.manifest;
+package net.mcorp.thirdeye.dynamic;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,15 +11,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import net.mcorp.thirdeye.threading.Threader;
+import net.mcorp.thirdeye.ThirdEye;
+import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
+import net.mcorp.thirdeye.systems.ThreadManager;
 
 public final class Manifest {
 
 	public static final Manifest instance = new Manifest();
 	
-	public ArrayList<JavaClass> classes = new ArrayList<JavaClass>();
+	private final ArrayList<JavaClass> classes = new ArrayList<JavaClass>();
 	
-	private Manifest() {}
+	public final JavaClass[] classes() {
+		return classes.toArray(new JavaClass[] {});
+	}
+	
+	public final File WORKSPACE;
+	
+	private Manifest() {
+		WORKSPACE = new File(ThirdEye.directory().getAbsolutePath()+"/Workspace");
+	}
 	
 	public void read(File file) throws IOException {
 		
@@ -42,7 +52,7 @@ public final class Manifest {
 		    NodeList autoShutdown = doc.getElementsByTagName("AutoReboot");
 		    if(autoShutdown.getLength() == 1) {
 		    	if(autoShutdown.item(0).getTextContent().equalsIgnoreCase("true")) {
-		    		Thread restartThread = Threader.instance.createThread(new Runnable() {
+		    		/*Thread restartThread = Threader.instance.createThread(new Runnable() {
 
 		    			@Override
 		    			public void run() {
@@ -54,13 +64,13 @@ public final class Manifest {
 		    				} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}*/
-		    				System.out.println("Schedualed reboot in 5 minutes.");
+							}
+		    				System.out.println("Scheduled reboot in 5 minutes.");
 		    			}
 		    			
 		    		});
 		    		
-		    		Runtime.getRuntime().addShutdownHook(restartThread);
+		    		Runtime.getRuntime().addShutdownHook(restartThread);*/
 		    	}
 		    }
 		    

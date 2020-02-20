@@ -1,6 +1,7 @@
-package net.mcorp.thirdeye.devices;
+package net.mcorp.thirdeye.dynamic.devices.prefabs;
 
-import net.mcorp.thirdeye.manifest.JavaClass;
+import net.mcorp.thirdeye.dynamic.devices.Device;
+import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 
 public abstract class BooleanDevice extends Device{
 

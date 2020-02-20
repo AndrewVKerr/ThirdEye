@@ -1,6 +1,6 @@
-package net.mcorp.thirdeye.devices;
+package net.mcorp.thirdeye.dynamic.devices;
 
-import net.mcorp.thirdeye.manifest.JavaClass;
+import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 
 /**
  * <h1>Device</h1>
@@ -18,10 +18,10 @@ import net.mcorp.thirdeye.manifest.JavaClass;
  * 	adding any parameters, or not extended at all. The system is designed to create a new instance using
  * 	this constructor and will not function properly if the parameters do not stay the same. The device
  * 	is started using the {@linkplain #start()} method. This method will create any necessary resources that
- * 	is required for the device to function. The device will then run using the created resources. When it
+ * 	is required for the device to function. The start method is responsible to start any continuous processes. When it
  * 	is time for the device to stop the method {@linkplain #stop()} will be executed. This method will
- * 	destroy any of the generated resources. The device may remain in memory or may be destroyed. This device
- * 	can be restarted via a call to the {@linkplain #start()} method.
+ * 	destroy any of the generated resources. The device may remain in memory or may be destroyed only after 
+ *  the stop method has been called. This device can be restarted via a call to the {@linkplain #start()} method.
  * </p>
  * @author Andrew Kerr
  */
@@ -64,5 +64,17 @@ public abstract class Device {
 	 * @return {@linkplain Exception}[] - An array of exceptions.
 	 */
 	public abstract Exception[] exceptions();
+	
+	/**
+	 * Clears a specific Exception from this Device.
+	 * @param e - {@linkplain Exception} - The exception to clear.
+	 */
+	public abstract void clearException(Exception e);
+	
+	/**
+	 * This method is used to return the name of the device.
+	 * @return {@linkplain String} - The name of the device.
+	 */
+	public abstract String deviceName();
 	
 }

@@ -1,4 +1,4 @@
-package net.mcorp.thirdeye.manifest;
+package net.mcorp.thirdeye.dynamic.javaclass;
 
 import java.io.File;
 import java.io.FileNotFoundException;

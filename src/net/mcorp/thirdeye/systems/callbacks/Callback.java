@@ -1,4 +1,4 @@
-package net.mcorp.thirdeye.callbacks;
+package net.mcorp.thirdeye.systems.callbacks;
 
 /**
  * <h1>Callback</h1>

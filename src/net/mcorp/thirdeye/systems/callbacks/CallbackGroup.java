@@ -1,4 +1,4 @@
-package net.mcorp.thirdeye.callbacks;
+package net.mcorp.thirdeye.systems.callbacks;
 
 import java.util.ArrayList;
 

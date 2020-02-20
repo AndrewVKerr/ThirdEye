@@ -23,3 +23,7 @@
 hs_err_pid*
 /bin/
 /bin1/
+
+# Custom Files #
+/Workspace/
+/debugger/

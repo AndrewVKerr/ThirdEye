@@ -1,11 +1,17 @@
 <Manifest>
+    <SecurityManager>
+        <Networking></Networking>
+        <Threading>
+            <ThreadGroup name="system" allow="true"/>
+            <ThreadGroup name="main" allow="true"/>
+            <ThreadGroup name="thirdEye" allow="true"/>
+        </Threading>
+    </SecurityManager>
     <JavaClasses>
-        <JavaClass>
-            <AccessRights Threading="true" NetworkingConnect="true"/>
+        <JavaClass uid="Cam-Garage">
+            <AccessRights Threading="true" NetworkingConnect="true" FileWrite="true"
+            />
             <Classpath jar_location="/home/andrew/Desktop/GIT/ThirdEyeRepo/classes/Test.jar">classes.JideTechCamera</Classpath>
-            <Threads>
-                <Thread name="JideTechCamera"/>
-            </Threads>
             <Parameters>
                 <Password value="j3cqU3PzYjBScfd"/>
             </Parameters>
