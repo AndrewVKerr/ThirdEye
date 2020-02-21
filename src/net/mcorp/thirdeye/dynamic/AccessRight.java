@@ -59,6 +59,11 @@ public enum AccessRight {
 	
 	;
 
+	/**
+	 * Attempts to find a {@linkplain AccessRight} that matches the given {@linkplain String}.
+	 * @param name - {@linkplain String} - The name of the AccessRight.
+	 * @return {@linkplain AccessRight} - The AccessRight that matches the given name, or null if nothing was found.
+	 */
 	public static AccessRight parse(String name) {
 		for(AccessRight right : values()) {
 			if(right.name().equalsIgnoreCase(name)) {

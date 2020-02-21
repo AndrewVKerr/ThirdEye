@@ -20,11 +20,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.mcorp.thirdeye.dynamic.devices.prefabs.CameraDevice;
+import net.mcorp.thirdeye.dynamic.devices.prefabs.RecordingImageDevice;
 import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 import net.mcorp.thirdeye.systems.ThreadManager;
 
-public class JideTechCamera extends CameraDevice implements Runnable{
+public class JideTechCamera extends RecordingImageDevice implements Runnable{
 
 	public JideTechCamera(JavaClass configuration) {
 		super(configuration);

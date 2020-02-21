@@ -28,7 +28,7 @@ public class TESecurityManager extends SecurityManager{
 		if(current_thread.getName().equals("system") || current_thread.getName().equals("main"))
 			return;
 		
-		if(ThreadManager.instance() == null || Manifest.instance == null)
+		if(ThreadManager.instance() == null || Manifest.instance() == null)
 			return;
 		
 		if(DataServer.instance().isThread(current_thread))
@@ -36,7 +36,7 @@ public class TESecurityManager extends SecurityManager{
 		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
-		for(JavaClass java_class : Manifest.instance.classes()) {
+		for(JavaClass java_class : Manifest.instance().classes()) {
 			if(java_class.instance() == device) {
 				for(AccessRight right : java_class.getAccessRights()) {
 					if(right == AccessRight.NetworkingHost) {
@@ -69,13 +69,13 @@ public class TESecurityManager extends SecurityManager{
 		if(ste[1].getMethodName().equals("checkAccess") && ste[1].getClassName().equals(this.getClass().getName()))
 			return;
 		
-		if(ThreadManager.instance() == null || Manifest.instance == null)
+		if(ThreadManager.instance() == null || Manifest.instance() == null)
 			return;
 		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup());
 		if(device != null) {
 			
-			for(JavaClass java_class : Manifest.instance.classes()) {
+			for(JavaClass java_class : Manifest.instance().classes()) {
 				if(java_class.instance() == device) {
 					for(AccessRight right : java_class.getAccessRights()) {
 						if(right == AccessRight.Threading) {
@@ -99,7 +99,7 @@ public class TESecurityManager extends SecurityManager{
 		if(current_thread.getName().equals("system") || current_thread.getName().equals("main"))
 			return;
 		
-		if(ThreadManager.instance() == null || Manifest.instance == null)
+		if(ThreadManager.instance() == null || Manifest.instance() == null)
 			return;
 		
 		if(DataServer.instance().isThread(current_thread))
@@ -107,7 +107,7 @@ public class TESecurityManager extends SecurityManager{
 		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
-		for(JavaClass java_class : Manifest.instance.classes()) {
+		for(JavaClass java_class : Manifest.instance().classes()) {
 			if(java_class.instance() == device) {
 				for(AccessRight right : java_class.getAccessRights()) {
 					if(right == AccessRight.NetworkingConnect) {
@@ -132,12 +132,12 @@ public class TESecurityManager extends SecurityManager{
 		if(current_thread.getName().equals("system") || current_thread.getName().equals("main"))
 			return;
 		
-		if(ThreadManager.instance() == null || Manifest.instance == null)
+		if(ThreadManager.instance() == null || Manifest.instance() == null)
 			return;
 		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
-		for(JavaClass java_class : Manifest.instance.classes()) {
+		for(JavaClass java_class : Manifest.instance().classes()) {
 			if(java_class.instance() == device) {
 				for(AccessRight right : java_class.getAccessRights()) {
 					if(right == AccessRight.NetworkingConnect) {
@@ -162,7 +162,7 @@ public class TESecurityManager extends SecurityManager{
 		if(current_thread.getName().equals("system") || current_thread.getName().equals("main"))
 			return;
 		
-		if(ThreadManager.instance() == null || Manifest.instance == null)
+		if(ThreadManager.instance() == null || Manifest.instance() == null)
 			return;
 		
 		if(DataServer.instance().isThread(current_thread))
@@ -171,7 +171,7 @@ public class TESecurityManager extends SecurityManager{
 		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
-		for(JavaClass java_class : Manifest.instance.classes()) {
+		for(JavaClass java_class : Manifest.instance().classes()) {
 			if(java_class.instance() == device) {
 				for(AccessRight right : java_class.getAccessRights()) {
 					if(right == AccessRight.FileWrite) {

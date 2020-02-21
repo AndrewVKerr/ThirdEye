@@ -1,7 +1,7 @@
 module ThirdEyeTemp {
-	requires java.desktop;
+	requires transitive java.desktop;
 	requires transitive java.xml;
-	requires pi4j.core;
+	//requires pi4j.core; //Not available at lewis and clark.
 	
 	exports net.mcorp.thirdeye;
 	exports net.mcorp.thirdeye.debugger;

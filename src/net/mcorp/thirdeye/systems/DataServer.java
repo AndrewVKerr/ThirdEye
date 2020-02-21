@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import net.mcorp.thirdeye.dynamic.Manifest;
 import net.mcorp.thirdeye.dynamic.devices.Device;
-import net.mcorp.thirdeye.dynamic.devices.prefabs.CameraDevice;
+import net.mcorp.thirdeye.dynamic.devices.prefabs.RecordingImageDevice;
 import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 
 /**
@@ -105,12 +105,12 @@ public final class DataServer implements Runnable{
 				OutputStream out = sock.getOutputStream();
 				boolean done = false;
 				
-				for(JavaClass javaclass : Manifest.instance.classes()) {
+				for(JavaClass javaclass : Manifest.instance().classes()) {
 					Device device = javaclass.instance();
 					if(device != null) {
 						if(url[0].equals("/"+device.deviceName())) {
-							if(device instanceof CameraDevice) {
-								CameraDevice cam_device = ((CameraDevice) device);
+							if(device instanceof RecordingImageDevice) {
+								RecordingImageDevice cam_device = ((RecordingImageDevice) device);
 								Image img = cam_device.getCurrentImage();
 								if(img != null) {
 									out.write("Http/1.1 200 OK\n\n".getBytes());

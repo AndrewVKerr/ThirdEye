@@ -24,6 +24,7 @@ import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
  *  the stop method has been called. This device can be restarted via a call to the {@linkplain #start()} method.
  * </p>
  * @author Andrew Kerr
+ * @implNote When extending this class please refer to the <b>"Extending this Class"</b> section of the {@linkplain Device} class documentation.
  */
 public abstract class Device {
 	

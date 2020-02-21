@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="net/mcorp/thirdeye/dynamic/javaclass/JavaClassLoader.java" kind="src" path="src"/>
+	<classpathentry excluding="net/mcorp/thirdeye/dynamic/javaclass/JavaClassLoader.java|net/mcorp/thirdeye/systems/GPIOManager.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="classes"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/opt/pi4j/lib/pi4j-core.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

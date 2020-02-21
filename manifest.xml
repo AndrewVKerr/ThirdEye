@@ -8,7 +8,9 @@
         </Threading>
     </SecurityManager>
     <JavaClasses>
-        <JavaClass uid="Cam-Garage">
+        <JavaClass>
+            <Name>Garage-Cam</Name>
+            <Disable/>
             <AccessRights Threading="true" NetworkingConnect="true" FileWrite="true"
             />
             <Classpath jar_location="/home/andrew/Desktop/GIT/ThirdEyeRepo/classes/Test.jar">classes.JideTechCamera</Classpath>

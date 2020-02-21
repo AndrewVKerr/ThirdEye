@@ -10,6 +10,14 @@ import net.mcorp.thirdeye.systems.ThreadManager;
 import net.mcorp.thirdeye.systems.callbacks.Callback;
 import net.mcorp.thirdeye.systems.callbacks.Callbacks;
 
+/**
+ * <h1>ThirdEye</h1>
+ * <hr>
+ * <p>
+ * 	ThirdEye
+ * </p>
+ * @author Andrew Kerr
+ */
 public class ThirdEye {
 	
 	private static File directory;
@@ -34,7 +42,6 @@ public class ThirdEye {
 		Debugger.instance.out.println("Debugger Ready...");
 		
 		//Step 3: Start Server Software
-		//TODO: Add Networker
 		DataServer.instance().start();
 		
 		//Step 4: Create a Callback Manager

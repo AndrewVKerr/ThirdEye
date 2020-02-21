@@ -12,21 +12,53 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import net.mcorp.thirdeye.ThirdEye;
+import net.mcorp.thirdeye.debugger.Debugger;
 import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
-import net.mcorp.thirdeye.systems.ThreadManager;
 
+/**
+ * <h1>Manifest</h1>
+ * <hr>
+ * <p>
+ * 	This class is responsible for maintaining a list of {@linkplain JavaClass}es. 
+ * </p>
+ * @author Andrew Kerr
+ *
+ */
 public final class Manifest {
-
-	public static final Manifest instance = new Manifest();
 	
+	private static Manifest instance = new Manifest();
+	
+	/**
+	 * The current instance of the {@linkplain Manifest} object. If one does not exist then one will be created.
+	 * @return {@linkplain Manifest} - The current and only instance of this class.
+	 */
+	public static final Manifest instance() {
+		if(instance == null)
+			instance = new Manifest();
+		return instance;
+	}
+	
+	/**
+	 * An {@linkplain ArrayList} of {@linkplain JavaClass}es.
+	 */
 	private final ArrayList<JavaClass> classes = new ArrayList<JavaClass>();
 	
+	/**
+	 * Returns the array stored inside {@linkplain #classes}.
+	 * @return {@linkplain JavaClass}[] - An array of {@linkplain JavaClass} objects.
+	 */
 	public final JavaClass[] classes() {
 		return classes.toArray(new JavaClass[] {});
 	}
 	
+	/**
+	 * The workspace directory for this manifest object, used as a basis for the {@linkplain JavaClass#getWorkspace()} method unless override inside manifest.xml file.
+	 */
 	public final File WORKSPACE;
 	
+	/**
+	 * The constructor for the {@linkplain Manifest} class.
+	 */
 	private Manifest() {
 		WORKSPACE = new File(ThirdEye.directory().getAbsolutePath()+"/Workspace");
 	}
@@ -71,6 +103,7 @@ public final class Manifest {
 		    		});
 		    		
 		    		Runtime.getRuntime().addShutdownHook(restartThread);*/
+		    		Debugger.warn().println("AutoReboot hook is currently not enabled.");
 		    	}
 		    }
 		    

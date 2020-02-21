@@ -55,7 +55,7 @@ public final class JavaClass {
 	
 	/**
 	 * The node that contains data for this JavaClass.
-	 * @implNote This object contains no reference back tThis method is kept private as this class should not be generated outside of this class.o the actual document used to generate this object.
+	 * @implNote This object contains no reference back to the actual document used to generate this object.
 	 * It is just a clone of the Node('s) found in the actual document.
 	 */
 	private Node rootNode;
@@ -68,19 +68,61 @@ public final class JavaClass {
 	 */
 	public Node rootNode() { return this.rootNode; };
 	
+	/**
+	 * {@linkplain File} - The file object for the directory used by this {@linkplain JavaClass} and subsequent {@linkplain Device}.
+	 * @implNote This variable should act as a final variable once set to a non-null value it should remain as the same non-null value.
+	 * This value may be generated using the {@linkplain Manifest#WORKSPACE} variable and the {@linkplain #name} variable
+	 * if a name tag is not defined in the manifest file.
+	 */
 	private File workspace;
 	
+	/**
+	 * The file object for the directory used by this {@linkplain JavaClass} and subsequent {@linkplain Device}.
+	 * @return The {@linkplain File} stored in the private {@linkplain #rootNode} variable.
+	 * @implNote This is the only directory (sub-directory's included) that the {@linkplain #instance} can interact with except the folder "/tmp".
+	 */
 	public final File getWorkspace() { return workspace; };
 	
-	private String uid;
+	/**
+	 * The name of the {@linkplain Device} object. Retrieved from the manifest directly or if one is not provided then generated.
+	 * @implNote This variable should act as a final variable once set to a non-null value it should remain as the same non-null value.
+	 */
+	private String name;
+
+	/**
+	 * The name of the {@linkplain Device} object, defined by the manifest or if not defined then is generated.
+	 * @return {@linkplain String} - The name of the {@linkplain Device} object.
+	 * @implNote The name is used to navigate to the {@linkplain Device} via the {@linkplain DataServer} or used
+	 * by the {@linkplain #workspace} variable if one was not defined.
+	 */
+	public final String name() { return name; };
 	
-	public final String uid() { return uid; };
+	/**
+	 * {@linkplain Boolean} - If this is set to True then the {@linkplain Device#start()} method was not called and
+	 * should not be called as this device has not been started for a reason. Otherwise False.
+	 */
+	private boolean disabled = false;
+	
+	/**
+	 * The current disabled status for this {@linkplain JavaClass}. Set to True if the device has not been started 
+	 * due to the manifest disabling it.
+	 * @return {@linkplain Boolean} - The value stored in {@linkplain #disabled}.
+	 * @implNote If this method returns false then this device is possibly not ready for execution. This should be checked
+	 * before a manual startup for the device, if the value returned is {@linkplain Boolean#TRUE} then this device should
+	 * not be started.
+	 */
+	public final boolean disabled() { return disabled; };
 	
 	/**
 	 * The constructor for JavaClass. Must be set to private.
 	 */
 	private JavaClass() {};
 	
+	/**
+	 * Copy's the provided {@linkplain Node} and all children Nodes onto a new Document before returning the new root node.
+	 * @param old_node - {@linkplain Node} - The node to copy.
+	 * @return {@linkplain Node} - A deep copy of the provided node and all children nodes.
+	 */
 	private static Node copy(Node old_node) {
 		DocumentBuilderFactory doc_builder_factory = DocumentBuilderFactory.newInstance();
 		try {
@@ -96,20 +138,20 @@ public final class JavaClass {
 	}
 	
 	/**
-	 * 
-	 * @param javaclass_node
-	 * @return
+	 * When a {@linkplain JavaClass} has not had a name tag assigned to it then the prefix "Device-" concatenated with this variable is assigned to the {@linkplain JavaClass#name}.
 	 */
-	public static JavaClass newInstance(Node javaclass_node) {
+	private static int id_count = 0;
+	
+	/**
+	 * Creates a new {@linkplain JavaClass} object using the provided {@linkplain Node}.
+	 * @param node - {@linkplain Node} - The javaclass node. Should have the tag name of "JavaClass".
+	 * @return {@linkplain JavaClass} - A JavaClass object generated using the provided {@linkplain Node}.
+	 */
+	public static JavaClass newInstance(Node node) {
 		JavaClass javaclass = new JavaClass();
-		javaclass.rootNode = copy(javaclass_node);
+		javaclass.rootNode = copy(node);
 		
-		Node uid;
-		if((uid = javaclass_node.getAttributes().getNamedItem("uid")) != null) {
-			javaclass.uid = uid.getNodeValue();
-		}
-		
-		NodeList children_nodes = javaclass_node.getChildNodes();
+		NodeList children_nodes = node.getChildNodes();
 		for(int i = 0; i < children_nodes.getLength(); i++) {
 			Node child_node = children_nodes.item(i);
 			
@@ -166,7 +208,6 @@ public final class JavaClass {
 							}
 							if(Device.class.isAssignableFrom(loaded_class)) {
 								Device device = (Device) loaded_class.getConstructor(JavaClass.class).newInstance(javaclass);
-								device.start();
 								javaclass.instance = device;
 							}
 						} catch (Exception e) {
@@ -183,14 +224,28 @@ public final class JavaClass {
 				}else
 				if(child_node.getNodeName().equalsIgnoreCase("workspace")) {
 					javaclass.workspace = new File(child_node.getTextContent());
+				}else
+				if(child_node.getNodeName().equalsIgnoreCase("name")) {
+					javaclass.name = child_node.getTextContent();
+				}else
+				if(child_node.getNodeName().equalsIgnoreCase("disabled")) {
+					javaclass.disabled = true;
 				}
 				
 			}
 		}
 		
-		if(javaclass.workspace == null) {
-			javaclass.workspace = new File(Manifest.instance.WORKSPACE+"/"+javaclass.uid);
+		if(javaclass.name == null) {
+			javaclass.name = "Device-"+id_count;
+			id_count++;
 		}
+		
+		if(javaclass.workspace == null) {
+			javaclass.workspace = new File(Manifest.instance().WORKSPACE+"/"+javaclass.name);
+		}
+		
+		if(javaclass.instance != null && javaclass.disabled == false)
+			javaclass.instance.start();
 		
 		return javaclass;
 	}

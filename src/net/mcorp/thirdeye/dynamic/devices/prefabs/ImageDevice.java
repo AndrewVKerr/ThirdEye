@@ -5,6 +5,18 @@ import java.awt.Image;
 import net.mcorp.thirdeye.dynamic.devices.Device;
 import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 
+/**
+ * <h1>ImageDevice</h1>
+ * <hr>
+ * <p>
+ * 	This class is used to implement a ImageDevice such as a camera.
+ * 	This class extends {@linkplain Device}.
+ * </p>
+ * @author Andrew Kerr
+ * @see RecordingImageDevice
+ * @see Device
+ * @implNote When extending this class please refer to the <b>"Extending this Class"</b> section of the {@linkplain Device} class documentation.
+ */
 public abstract class ImageDevice extends Device {
 
 	/**
