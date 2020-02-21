@@ -31,6 +31,9 @@ public class TESecurityManager extends SecurityManager{
 		if(ThreadManager.instance() == null || Manifest.instance == null)
 			return;
 		
+		if(DataServer.instance().isThread(current_thread))
+			return;
+		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
 		for(JavaClass java_class : Manifest.instance.classes()) {
@@ -99,6 +102,9 @@ public class TESecurityManager extends SecurityManager{
 		if(ThreadManager.instance() == null || Manifest.instance == null)
 			return;
 		
+		if(DataServer.instance().isThread(current_thread))
+			return;
+		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
 		for(JavaClass java_class : Manifest.instance.classes()) {
@@ -159,6 +165,10 @@ public class TESecurityManager extends SecurityManager{
 		if(ThreadManager.instance() == null || Manifest.instance == null)
 			return;
 		
+		if(DataServer.instance().isThread(current_thread))
+			if(file.startsWith("/tmp"))
+				return;
+		
 		Device device = ThreadManager.instance().getDevice(current_thread.getThreadGroup()); 
 		
 		for(JavaClass java_class : Manifest.instance.classes()) {
@@ -183,6 +193,7 @@ public class TESecurityManager extends SecurityManager{
 			}
 		}
 		
+		Debugger.warn().println("Current Thread ["+current_thread+"] has no right to delete file ["+file+"]!");
 		throw new SecurityException("Current Thread does not have rights to delete this file.");
 	}
 	

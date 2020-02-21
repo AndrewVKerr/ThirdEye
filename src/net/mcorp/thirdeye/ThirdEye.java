@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.mcorp.thirdeye.debugger.Debugger;
 import net.mcorp.thirdeye.dynamic.Manifest;
+import net.mcorp.thirdeye.systems.DataServer;
 import net.mcorp.thirdeye.systems.TESecurityManager;
 import net.mcorp.thirdeye.systems.ThreadManager;
 import net.mcorp.thirdeye.systems.callbacks.Callback;
@@ -34,6 +35,7 @@ public class ThirdEye {
 		
 		//Step 3: Start Server Software
 		//TODO: Add Networker
+		DataServer.instance().start();
 		
 		//Step 4: Create a Callback Manager
 		Callbacks.instance.onShutdown.registerCallback(new Callback<Integer>() {
