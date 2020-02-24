@@ -12,6 +12,7 @@ import net.mcorp.thirdeye.dynamic.Manifest;
 import net.mcorp.thirdeye.dynamic.devices.Device;
 import net.mcorp.thirdeye.dynamic.javaclass.JavaClass;
 import net.mcorp.thirdeye.systems.callbacks.Callbacks;
+import net.mcorp.thirdeye.systems.network.DataServer;
 
 public class TESecurityManager extends SecurityManager{
 	
@@ -160,6 +161,10 @@ public class TESecurityManager extends SecurityManager{
 		Thread current_thread = Thread.currentThread();
 		
 		if(current_thread.getName().equals("system") || current_thread.getName().equals("main"))
+			return;
+		
+		ThreadGroup thread_group = current_thread.getThreadGroup();
+		if(thread_group == ThreadManager.instance().mainThreadGroup || thread_group == ThreadManager.instance().systemThreadGroup)
 			return;
 		
 		if(ThreadManager.instance() == null || Manifest.instance() == null)

@@ -4,11 +4,11 @@ import java.io.File;
 
 import net.mcorp.thirdeye.debugger.Debugger;
 import net.mcorp.thirdeye.dynamic.Manifest;
-import net.mcorp.thirdeye.systems.DataServer;
 import net.mcorp.thirdeye.systems.TESecurityManager;
 import net.mcorp.thirdeye.systems.ThreadManager;
 import net.mcorp.thirdeye.systems.callbacks.Callback;
 import net.mcorp.thirdeye.systems.callbacks.Callbacks;
+import net.mcorp.thirdeye.systems.network.DataServer;
 
 /**
  * <h1>ThirdEye</h1>
@@ -56,7 +56,7 @@ public class ThirdEye {
 		});
 		
 		//Step 5: Read in Manifest TODO:
-		Manifest.instance.read(new File(directory.getAbsolutePath()+"/manifest.xml"));
+		Manifest.instance().read(new File(directory.getAbsolutePath()+"/manifest.xml"));
 		
 		//Step 6: Restart the System if Program Fails.
 		//System.exit(0);

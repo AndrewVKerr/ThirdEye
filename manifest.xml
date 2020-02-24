@@ -9,7 +9,7 @@
     </SecurityManager>
     <JavaClasses>
         <JavaClass>
-            <Name>Garage-Cam</Name>
+            <Name>Cam-Garage</Name>
             <Disable/>
             <AccessRights Threading="true" NetworkingConnect="true" FileWrite="true"
             />
