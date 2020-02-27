@@ -68,7 +68,11 @@ public final class DataServer implements Runnable{
 		if(socket != null || thread != null)
 			throw new IOException("Server is already running!");
 		
-		socket = new ServerSocket(2000);
+		try {
+			socket = new ServerSocket(80);
+		}catch(Exception e) {
+			socket = new ServerSocket(2000);
+		}
 		
 		thread = ThreadManager.instance().createThread(this);
 		thread.setName("Network Thread");

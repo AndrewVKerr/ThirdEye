@@ -1,8 +1,10 @@
 package net.mcorp.thirdeye.systems.network.clients.http;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -34,9 +36,13 @@ public class HttpClient extends Client {
 			header += c;
 		}
 		
+		while(in.available() > 0) {
+			in.read();
+		}
+		
 		String[] temp = header.split(" ");
 		if(temp.length < 3) {
-			socket.getOutputStream().write("Http/1.1 400 Client Error\n\n".getBytes());
+			socket.getOutputStream().write("Http/1.1 400 Client Error\nConnection:Closed\n\n".getBytes());
 			socket.close();
 		}
 			
@@ -67,7 +73,8 @@ public class HttpClient extends Client {
 		//1st priority is to display prefabricated html/css/javascript/etc... info.
 		File file;
 		if((file = new File(HTTP_WORKSPACE.getAbsolutePath()+url)).exists() && file.isDirectory() == false) {
-			out.write(HttpClient.response(200, "Ok", null, Files.readAllBytes(file.toPath())));
+			out.write(HttpClient.response(200, "Ok", new String[] {"Connection:Closed"}, Files.readAllBytes(file.toPath())));
+			out.flush();
 			return;
 		}
 		
@@ -82,6 +89,7 @@ public class HttpClient extends Client {
 					String temp_url = url.substring(device_url.length());
 					if(temp_device instanceof Webpaged) {
 						((Webpaged)temp_device).sendWebpageAndPerformActions(this,temp_url,querys);
+						out.flush();
 						return;
 					}
 				}
@@ -107,12 +115,14 @@ public class HttpClient extends Client {
 			html += "\t\t \n";
 			html += "\t</body>\n";
 			html += "</html>";
-			out.write(HttpClient.response(200, "OK", null, html.getBytes()));
+			out.write(HttpClient.response(200, "OK", new String[] {"Connection:Closed"}, html.getBytes()));
+			out.flush();
 			return;
 		}
 		
 		//Last thing is to display a 404 error page.
 		out.write(HttpClient.response(404, "Not Found", null, null));
+		out.flush();
 		
 	}
 
