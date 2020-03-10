@@ -72,10 +72,16 @@ public class HttpClient extends Client {
 		
 		//1st priority is to display prefabricated html/css/javascript/etc... info.
 		File file;
+		
 		if((file = new File(HTTP_WORKSPACE.getAbsolutePath()+url)).exists() && file.isDirectory() == false) {
-			out.write(HttpClient.response(200, "Ok", new String[] {"Connection:Closed"}, Files.readAllBytes(file.toPath())));
-			out.flush();
-			return;
+			//GET
+			if(protocol.equalsIgnoreCase("get")) {
+				out.write(HttpClient.response(200, "Ok", new String[] {"Connection:Closed"}, Files.readAllBytes(file.toPath())));
+				out.flush();
+				return;
+			}else {
+				out.write(HttpClient.response(405, protocol+" Not Allowed", new String[] {"Accept: GET"}, null));
+			}
 		}
 		
 		//2nd priority is to display any information from a device.
@@ -88,7 +94,7 @@ public class HttpClient extends Client {
 					device = temp_device;
 					String temp_url = url.substring(device_url.length());
 					if(temp_device instanceof Webpaged) {
-						((Webpaged)temp_device).sendWebpageAndPerformActions(this,temp_url,querys);
+						((Webpaged)temp_device).httpResponse(this,protocol,temp_url,querys);
 						out.flush();
 						return;
 					}

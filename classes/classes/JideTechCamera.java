@@ -247,7 +247,7 @@ public class JideTechCamera extends ImageDevice implements Runnable, Recordable,
 	}
 
 	@Override
-	public void sendWebpageAndPerformActions(Client client, String url, HashMap<String, String> querys) throws Exception {
+	public void httpResponse(Client client, String protocol, String url, HashMap<String, String> querys) throws Exception {
 		OutputStream out = client.socket.getOutputStream();
 		if(url.equalsIgnoreCase("/images")) {
 			Image img = this.getCurrentImage();
